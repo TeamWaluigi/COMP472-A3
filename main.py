@@ -1,4 +1,5 @@
 from data_set_loader import load_dataset
+from metrics import output_trace, output_overall_evaluation
 from models import NaiveBayesClassifier
 from vocabulary import extract_vocabulary_original, extract_vocabulary_filtered
 
@@ -41,15 +42,21 @@ nb_bow_fv.train()
 
 print("2.2 OUTPUT")
 
+output_path = "Output/"
+
 print("Output for NB-BOW-OV")
-nb_bow_ov.evaluate(test_set=test_set_data)
+nb_bow_ov_scores = nb_bow_ov.evaluate(test_set=test_set_data)
 print("- Trace")
+output_trace(test_set_data, nb_bow_ov_scores, output_path + "trace_NB-BOW-OV.txt")
 print("- Overall Evaluation File")
+output_overall_evaluation(test_set_data, nb_bow_ov_scores, output_path + "eval_NB-BOW-OV.txt")
 
 print("Output for NB-BOW-FV")
-nb_bow_fv.evaluate(test_set=test_set_data)
+nb_bow_fv_scores = nb_bow_fv.evaluate(test_set=test_set_data)
 print("- Trace")
+output_trace(test_set_data, nb_bow_ov_scores, output_path + "trace_NB-BOW-FV.txt")
 print("- Overall Evaluation File")
+output_overall_evaluation(test_set_data, nb_bow_fv_scores, output_path + "eval_NB-BOW-FV.txt")
 
 print("3 - THE LSTM CLASSIFIER (LSTM-W2V)")
 

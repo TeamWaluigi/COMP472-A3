@@ -99,10 +99,4 @@ class NaiveBayesClassifier:
 
             scores[text] = (factual_score, non_factual_score)
 
-        print("done evaluating scores")
-
-    def get_resulting_trace(self):
-        pass
-
-    def get_resulting_evaluation(self):
-        pass
+        return scores
