@@ -42,12 +42,12 @@ nb_bow_fv.train()
 print("2.2 OUTPUT")
 
 print("Output for NB-BOW-OV")
-nb_bow_ov_trace, nb_bow_ov_evaluation = nb_bow_ov.evaluate(test_set=test_set_data)
+nb_bow_ov.evaluate(test_set=test_set_data)
 print("- Trace")
 print("- Overall Evaluation File")
 
 print("Output for NB-BOW-FV")
-nb_bow_fv_trace, nb_bow_fv_evaluation = nb_bow_fv.evaluate(test_set=test_set_data)
+nb_bow_fv.evaluate(test_set=test_set_data)
 print("- Trace")
 print("- Overall Evaluation File")
 
