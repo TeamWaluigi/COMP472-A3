@@ -24,6 +24,8 @@ print("- Overall Evaluation File")
 print("3.0 THE LSTM CLASSIFIER (LSTM-W2V)")
 
 print("Run the LSTM classifier provided by our wonderful TAs to compare performance")
+print("- Code downloaded from https://gitlab.com/Feasinde/lstm-for-covid-disinformation")
+
 
 
 
