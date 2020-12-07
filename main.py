@@ -1,4 +1,5 @@
 from data_set_loader import load_dataset
+from models import NaiveBayesClassifier
 from vocabulary import extract_vocabulary_original, extract_vocabulary_filtered
 
 print("Main File Start")
@@ -9,9 +10,7 @@ print("Loading Datasets")
 training_set_data = load_dataset("Input/covid_training.tsv")
 test_set_data = load_dataset("Input/covid_test_public.tsv")
 
-
 print("2 - THE Naive Bayes Classifier (NB-BOW)")
-
 
 print("2.1 PARAMETERS")
 
@@ -26,22 +25,33 @@ add_delta = 0.01
 print("Set space to log base 10 to avoid arithmetic underflow")
 space = 10
 
+print("Construct our models")
+nb_bow_ov = NaiveBayesClassifier(training_set=training_set_data,
+                                 vocabulary=original_vocabulary,
+                                 add_delta=add_delta,
+                                 space=space)
+nb_bow_fv = NaiveBayesClassifier(training_set=training_set_data,
+                                 vocabulary=filtered_vocabulary,
+                                 add_delta=add_delta,
+                                 space=space)
+
+print("Train our models")
+nb_bow_ov.train()
+nb_bow_fv.train()
+
 print("2.2 OUTPUT")
 
 print("Output for NB-BOW-OV")
+nb_bow_ov_trace, nb_bow_ov_evaluation = nb_bow_ov.evaluate(test_set=test_set_data)
 print("- Trace")
 print("- Overall Evaluation File")
 
 print("Output for NB-BOW-FV")
+nb_bow_fv_trace, nb_bow_fv_evaluation = nb_bow_fv.evaluate(test_set=test_set_data)
 print("- Trace")
 print("- Overall Evaluation File")
-
 
 print("3 - THE LSTM CLASSIFIER (LSTM-W2V)")
 
 print("Run the LSTM classifier provided by our wonderful TAs to compare performance")
 print("- Code downloaded from https://gitlab.com/Feasinde/lstm-for-covid-disinformation")
-
-
-
-
