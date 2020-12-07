@@ -1,14 +1,16 @@
 class NaiveBayesClassifier:
-    def __init__(self, training_set, vocabulary, add_delta, space):
+    def __init__(self, training_set, vocabulary, add_delta=0.01, space=10):
         self.training_set = training_set
         self.vocabulary = vocabulary
         self.add_delta = add_delta
         self.space = space
 
-    def train(self):
-        factual_word_count = dict()
-        non_factual_word_count = dict()
+        self.factual_word_count = 0
+        self.non_factual_word_count = 0
+        self.factual_word_frequency = dict()
+        self.non_factual_word_frequency = dict()
 
+    def train(self):
         print("Determine Word Frequency per Q1 Value")
         for index, row in self.training_set.iterrows():
             text = row["text"]
@@ -30,21 +32,24 @@ class NaiveBayesClassifier:
                 # TODO strip words of things like periods?
 
                 if is_factual:
-                    if formatted_word in factual_word_count:
-                        factual_word_count[formatted_word] += + 1
+                    if formatted_word in self.factual_word_frequency:
+                        self.factual_word_frequency[formatted_word] += + 1
                     else:
-                        factual_word_count[formatted_word] = 1
+                        self.factual_word_frequency[formatted_word] = 1
                 else:
-                    if formatted_word in non_factual_word_count:
-                        non_factual_word_count[formatted_word] += + 1
+                    if formatted_word in self.non_factual_word_frequency:
+                        self.non_factual_word_frequency[formatted_word] += + 1
                     else:
-                        non_factual_word_count[formatted_word] = 1
+                        self.non_factual_word_frequency[formatted_word] = 1
 
         print("Apply Smoothing to Word Frequency")
-        for word in factual_word_count:
-            factual_word_count[word] += self.add_delta
-        for word in non_factual_word_count:
-            non_factual_word_count[word] += self.add_delta
+        print("Count Total Number of Words")
+        for word in self.factual_word_frequency:
+            self.factual_word_frequency[word] += self.add_delta
+            self.factual_word_count += self.factual_word_frequency[word]
+        for word in self.non_factual_word_frequency:
+            self.non_factual_word_frequency[word] += self.add_delta
+            self.non_factual_word_count += self.non_factual_word_frequency[word]
 
     def evaluate(self, test_set):
         return self.get_resulting_trace(), self.get_resulting_evaluation()
