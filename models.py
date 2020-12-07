@@ -1,3 +1,6 @@
+import math
+
+
 class NaiveBayesClassifier:
     def __init__(self, training_set, vocabulary, add_delta=0.01, space=10):
         self.training_set = training_set
@@ -61,8 +64,12 @@ class NaiveBayesClassifier:
 
         for index, row in test_set.iterrows():
             text = row[1]
-            factual_score = self.factual_text_count / (self.factual_text_count + self.non_factual_text_count)
-            non_factual_score = self.non_factual_text_count / (self.factual_text_count + self.non_factual_text_count)
+            factual_score = \
+                math.log(self.factual_text_count / (self.factual_text_count + self.non_factual_text_count),
+                         self.space)
+            non_factual_score = \
+                math.log(self.non_factual_text_count / (self.factual_text_count + self.non_factual_text_count),
+                         self.space)
 
             words = text.split(" ")
 
@@ -73,18 +80,26 @@ class NaiveBayesClassifier:
                     continue  # Ignore it
 
                 if formatted_word in self.factual_word_frequency:
-                    factual_score += self.factual_word_frequency[formatted_word] / self.factual_word_count
+                    factual_score += \
+                        math.log(self.factual_word_frequency[formatted_word] / self.factual_word_count,
+                                 self.space)
                 else:
-                    factual_score += self.add_delta / self.factual_word_count
+                    factual_score += \
+                        math.log(self.add_delta / self.factual_word_count,
+                                 self.space)
 
                 if formatted_word in self.non_factual_word_frequency:
-                    non_factual_score += self.non_factual_word_frequency[formatted_word] / self.non_factual_word_count
+                    non_factual_score += \
+                        math.log(self.non_factual_word_frequency[formatted_word] / self.non_factual_word_count,
+                                 self.space)
                 else:
-                    non_factual_score += self.add_delta / self.non_factual_word_count
+                    non_factual_score += \
+                        math.log(self.add_delta / self.non_factual_word_count,
+                                 self.space)
 
             scores[text] = (factual_score, non_factual_score)
 
-        print("done evaluating, minus working in LOG space")
+        print("done evaluating scores")
 
     def get_resulting_trace(self):
         pass
