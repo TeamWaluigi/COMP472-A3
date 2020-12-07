@@ -1,6 +1,20 @@
+from data_set_loader import load_dataset
+
 print("Main File Start")
 
-print("2.1 INPUT & PARAMETERS")
+print("1 - THE DATASET")
+
+print("Loading Datasets")
+training_set_data = load_dataset("Input/covid_training.tsv")
+test_set_data = load_dataset("Input/covid_test_public.tsv")
+
+# example of accessing the pd Dataframe
+print(training_set_data.loc[0, :])
+
+print("2 - THE Naive Bayes Classifier (NB-BOW)")
+
+
+print("2.1 IPARAMETERS")
 
 print("Obtaining Vocabularies")
 print("- Original Vocabulary, with all words, for model NB-BOW-OV")
@@ -21,7 +35,7 @@ print("- Trace")
 print("- Overall Evaluation File")
 
 
-print("3.0 THE LSTM CLASSIFIER (LSTM-W2V)")
+print("3 - THE LSTM CLASSIFIER (LSTM-W2V)")
 
 print("Run the LSTM classifier provided by our wonderful TAs to compare performance")
 print("- Code downloaded from https://gitlab.com/Feasinde/lstm-for-covid-disinformation")
