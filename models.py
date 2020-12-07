@@ -9,9 +9,17 @@ class NaiveBayesClassifier:
         factual_word_count = dict()
         non_factual_word_count = dict()
 
+        print("Determine Word Frequency per Q1 Value")
         for index, row in self.training_set.iterrows():
             text = row["text"]
-            is_factual = row["q1_label"] == "yes"
+            is_factual = False
+            if row["q1_label"] == "yes":
+                is_factual = True
+            elif row["q1_label"] == "no":
+                is_factual = False
+            else:
+                print("huh")
+
             words = text.split(" ")
 
             for word in words:
@@ -32,7 +40,11 @@ class NaiveBayesClassifier:
                     else:
                         non_factual_word_count[formatted_word] = 1
 
-        print("finished mapping words to class")
+        print("Apply Smoothing to Word Frequency")
+        for word in factual_word_count:
+            factual_word_count[word] += self.add_delta
+        for word in non_factual_word_count:
+            non_factual_word_count[word] += self.add_delta
 
     def evaluate(self, test_set):
         return self.get_resulting_trace(), self.get_resulting_evaluation()
