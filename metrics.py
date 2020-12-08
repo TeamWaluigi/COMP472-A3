@@ -1,4 +1,6 @@
 def output_trace(test_dataset, scores, file_path):
+    trace_lines = []
+
     for tweetID in scores:
         factual_score, non_factual_score = scores[tweetID]
 
@@ -13,11 +15,15 @@ def output_trace(test_dataset, scores, file_path):
 
         grade = "correct" if correct_class == most_likely_class else "wrong"
 
-        # TODO print the following to file
-        print(f'{tweetID}  {most_likely_class}  {formatted_top_score_value}  {correct_class}  {grade}')
+        trace_lines.append(f'{tweetID}  {most_likely_class}  {formatted_top_score_value}  {correct_class}  {grade}\n')
 
+    file = open(file_path, "w")
+    file.writelines(trace_lines)
+    file.close()
 
 def output_overall_evaluation(test_dataset, scores, file_path):
+    evaluation_lines = []
+
     correct_classifications = 0
     incorrect_classifications = 0
     yes_tp = 0
@@ -69,8 +75,15 @@ def output_overall_evaluation(test_dataset, scores, file_path):
     formatted_yes_f = '{:.4f}'.format(yes_f).lstrip('0')
     formatted_no_f = '{:.4f}'.format(no_f)
 
-    # TODO print the following to file
-    print(f'{formatted_accuracy}')
-    print(f'{formatted_yes_p}  {formatted_no_p}')
-    print(f'{formatted_yes_r}  {formatted_no_r}')
-    print(f'{formatted_yes_f}  {formatted_no_f}')
+    evaluation_lines.append(f'{formatted_accuracy}\n')
+    evaluation_lines.append(f'{formatted_yes_p}  {formatted_no_p}\n')
+    evaluation_lines.append(f'{formatted_yes_r}  {formatted_no_r}\n')
+    evaluation_lines.append(f'{formatted_yes_f}  {formatted_no_f}\n')
+
+    for line in evaluation_lines:
+        print(line)
+
+    file = open(file_path, "w")
+    file.writelines(evaluation_lines)
+    file.close()
+
