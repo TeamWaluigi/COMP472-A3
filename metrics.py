@@ -18,15 +18,47 @@ def output_trace(test_dataset, scores, file_path):
 
 
 def output_overall_evaluation(test_dataset, scores, file_path):
-    accuracy = 0.99
-    yes_p = 0.79
-    no_p = 0.356
-    yes_r = 0.435
-    no_r = 0.32
-    yes_f = 0.25
-    no_f = 0.9259
+    correct_classifications = 0
+    incorrect_classifications = 0
+    yes_tp = 0
+    yes_fp = 0
+    yes_fn = 0
+    no_tp = 0
+    no_fp = 0
+    no_fn = 0
 
-    # TODO actual evaluation goes here
+    for tweetID in scores:
+        factual_score, non_factual_score = scores[tweetID]
+        most_likely_class = "yes" if factual_score > non_factual_score else "no"
+
+        correct_class_row = test_dataset.loc[test_dataset[0] == tweetID]
+        correct_class = correct_class_row.iloc[0][2]
+
+        if correct_class == most_likely_class:
+            correct_classifications += 1
+        else:
+            incorrect_classifications += 1
+
+        if correct_class == "yes":
+            if most_likely_class == "yes":  # on the diagonal
+                yes_tp += 1
+            else:   # off the diagonal
+                yes_fn += 1     # TODO verify if this is correct??
+                no_fp += 1      # TODO verify if this is correct??
+        elif correct_class == "no":
+            if most_likely_class == "no":  # on the diagonal
+                no_tp += 1
+            else:   # off the diagonal
+                no_fn += 1      # TODO verify if this is correct??
+                yes_fp += 1     # TODO verify if this is correct??
+
+    accuracy = correct_classifications / (correct_classifications + incorrect_classifications)
+    yes_p = yes_tp / (yes_tp + yes_fp)
+    no_p = no_tp / (no_tp + no_fp)
+    yes_r = yes_tp / (yes_tp + yes_fn)
+    no_r = no_tp / (no_tp + no_fn)
+    yes_f = (2 * yes_p * yes_r) / (yes_p + yes_r)
+    no_f = (2 * no_p * no_r) / (no_p + no_r)
 
     # for some reason, the requirements in the handout demand this format...
     formatted_accuracy = '{:.4f}'.format(accuracy).lstrip('0')
