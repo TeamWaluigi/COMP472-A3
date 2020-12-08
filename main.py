@@ -9,7 +9,7 @@ print("1 - THE DATASET")
 
 print("Loading Datasets")
 training_set_data = load_dataset("Input/covid_training.tsv")
-test_set_data = load_dataset("Input/covid_test_public.tsv")
+test_set_data = load_dataset("Input/covid_test_public.tsv", False)
 
 print("2 - THE Naive Bayes Classifier (NB-BOW)")
 

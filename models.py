@@ -97,6 +97,6 @@ class NaiveBayesClassifier:
                         math.log(self.add_delta / self.non_factual_word_count,
                                  self.space)
 
-            scores[text] = (factual_score, non_factual_score)
+            scores[row[0]] = (factual_score, non_factual_score)
 
         return scores
