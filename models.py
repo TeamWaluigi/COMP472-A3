@@ -37,7 +37,6 @@ class NaiveBayesClassifier:
 
                 if formatted_word not in self.vocabulary:
                     continue
-                # TODO strip words of things like periods?
 
                 if is_factual:
                     if formatted_word in self.factual_word_frequency:

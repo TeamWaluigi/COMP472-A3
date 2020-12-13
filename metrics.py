@@ -29,9 +29,11 @@ def output_overall_evaluation(test_dataset, scores, file_path):
     yes_tp = 0
     yes_fp = 0
     yes_fn = 0
+    yes_tn = 0
     no_tp = 0
     no_fp = 0
     no_fn = 0
+    no_tn = 0
 
     for tweetID in scores:
         factual_score, non_factual_score = scores[tweetID]
@@ -48,15 +50,17 @@ def output_overall_evaluation(test_dataset, scores, file_path):
         if correct_class == "yes":
             if most_likely_class == "yes":  # on the diagonal
                 yes_tp += 1
+                no_tn += 1
             else:   # off the diagonal
-                yes_fn += 1     # TODO verify if this is correct??
-                no_fp += 1      # TODO verify if this is correct??
+                yes_fn += 1
+                no_fp += 1
         elif correct_class == "no":
             if most_likely_class == "no":  # on the diagonal
                 no_tp += 1
+                yes_tn += 1
             else:   # off the diagonal
-                no_fn += 1      # TODO verify if this is correct??
-                yes_fp += 1     # TODO verify if this is correct??
+                no_fn += 1
+                yes_fp += 1
 
     accuracy = correct_classifications / (correct_classifications + incorrect_classifications)
     yes_p = yes_tp / (yes_tp + yes_fp)
